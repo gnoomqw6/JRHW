@@ -81,6 +81,6 @@ public class CurrencyManipulator {
             }
             return result;
         }
-        else throw new NotEnoughMoneyException();
+        else throw new ArrayIndexOutOfBoundsException();
     }
 }

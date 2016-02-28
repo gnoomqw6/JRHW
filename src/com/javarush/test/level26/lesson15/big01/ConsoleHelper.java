@@ -5,10 +5,12 @@ import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationExce
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ResourceBundle;
 
 public class ConsoleHelper {
 
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private static ResourceBundle res = ResourceBundle.getBundle("com.javarush.test.level26.lesson15.big01.resources.common_en");
 
     public static void writeMessage(String message) {
         System.out.println(message);
@@ -18,8 +20,10 @@ public class ConsoleHelper {
         String message = "";
         try {
             message = reader.readLine();
-            if (message.equalsIgnoreCase("exit"))
+            if (message.equalsIgnoreCase("exit")) {
+                ConsoleHelper.writeMessage(res.getString("the.end"));
                 throw new InterruptOperationException();
+            }
         } catch (IOException ignored) {
         }
         return message;
@@ -28,12 +32,12 @@ public class ConsoleHelper {
     public static String askCurrencyCode() throws InterruptOperationException {
         String s = "";
         while (true) {
-            writeMessage("Enter currency code:");
+            ConsoleHelper.writeMessage(res.getString("choose.currency.code"));
             s = readString();
             if (s.length() == 3) {
                 return s.toUpperCase();
             }
-            writeMessage("Wrong currency code");
+            ConsoleHelper.writeMessage(res.getString("invalid.data"));
         }
     }
 
@@ -41,11 +45,11 @@ public class ConsoleHelper {
         String[] arr;
 
         while (true) {
-            writeMessage("Enter nominal and count of bills for " + currencyCode);
+            ConsoleHelper.writeMessage(String.format(res.getString("choose.denomination.and.count.format"), currencyCode));
             String s = readString();
             arr = s.split(" ");
             if (arr.length != 2) {
-                writeMessage("Wrong nominal or count value");
+                ConsoleHelper.writeMessage(res.getString("invalid.data"));
                 continue;
             }
             int i1 = Integer.parseInt(arr[0]);
@@ -58,11 +62,15 @@ public class ConsoleHelper {
 
     public static Operation askOperation() throws InterruptOperationException {
         while (true) {
-            System.out.println("Choose operation (1-4)");
+            ConsoleHelper.writeMessage(res.getString("choose.operation"));
+            ConsoleHelper.writeMessage(res.getString("operation.INFO"));
+            ConsoleHelper.writeMessage(res.getString("operation.DEPOSIT"));
+            ConsoleHelper.writeMessage(res.getString("operation.WITHDRAW"));
+            ConsoleHelper.writeMessage(res.getString("operation.EXIT"));
             try {
                 return Operation.getAllowableOperationByOrdinal(Integer.parseInt(readString()));
             } catch (NumberFormatException e) {
-                System.out.println("Wrong input, try again");
+                ConsoleHelper.writeMessage(res.getString("invalid.data"));
             }
         }
     }

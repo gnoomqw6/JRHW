@@ -7,16 +7,24 @@ import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationExce
 import com.javarush.test.level26.lesson15.big01.exception.NotEnoughMoneyException;
 
 import java.util.Map;
+import java.util.ResourceBundle;
 
-class WithdrawCommand implements Command{
+class WithdrawCommand implements Command {
+    private ResourceBundle res;
+
+    public WithdrawCommand() {
+        res = ResourceBundle.getBundle("com.javarush.test.level26.lesson15.big01.resources.withdraw_en");
+    }
+
     @Override
     public void execute() throws InterruptOperationException {
+        ConsoleHelper.writeMessage(res.getString("before"));
         String code = ConsoleHelper.askCurrencyCode();
         CurrencyManipulator manipulator = CurrencyManipulatorFactory.getManipulatorByCurrencyCode(code);
         Map<Integer, Integer> result;
 
         while (true) {
-            ConsoleHelper.writeMessage("Enter sum");
+            ConsoleHelper.writeMessage(res.getString("specify.amount"));
             try {
                 int sum = Integer.parseInt(ConsoleHelper.readString());
                 if (sum <= 0) throw new NumberFormatException();
@@ -26,14 +34,15 @@ class WithdrawCommand implements Command{
                 }
                 result = manipulator.withdrawAmount(sum);
                 for (Map.Entry<Integer, Integer> pair : result.entrySet()) {
-                    ConsoleHelper.writeMessage("\t" + pair.getKey() + " - " + pair.getValue());
+                    ConsoleHelper.writeMessage(String.format(res.getString("success.format"), pair.getKey() * pair.getValue(), code));
                 }
-                ConsoleHelper.writeMessage("Success");
                 break;
             } catch (NumberFormatException e) {
-                ConsoleHelper.writeMessage("Wrong sum");
+                ConsoleHelper.writeMessage(res.getString("specify.not.empty.amount"));
             } catch (NotEnoughMoneyException e) {
-                ConsoleHelper.writeMessage("Not enough money");
+                ConsoleHelper.writeMessage(res.getString("not.enough.money"));
+            } catch (ArrayIndexOutOfBoundsException e) {
+                ConsoleHelper.writeMessage(res.getString("exact.amount.not.available"));
             }
         }
     }

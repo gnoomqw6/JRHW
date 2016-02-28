@@ -7,20 +7,23 @@ import java.util.ResourceBundle;
 
 public class LoginCommand implements Command {
     private ResourceBundle validCreditCards;
+    private ResourceBundle res;
 
     public LoginCommand() {
         validCreditCards = ResourceBundle.getBundle("com.javarush.test.level26.lesson15.big01.resources.verifiedCards");
+        res = ResourceBundle.getBundle("com.javarush.test.level26.lesson15.big01.resources.login_en");
     }
 
     @Override
     public void execute() throws InterruptOperationException {
+        ConsoleHelper.writeMessage(res.getString("before"));
         while (true) {
-            ConsoleHelper.writeMessage("Enter card number");
+            ConsoleHelper.writeMessage(res.getString("specify.data"));
             String cardNum = ConsoleHelper.readString();
-            ConsoleHelper.writeMessage("Enter pin");
+            ConsoleHelper.writeMessage(res.getString("specify.data"));
             String pin = ConsoleHelper.readString();
             if (cardNum.length() != 12 || pin.length() != 4) {
-                ConsoleHelper.writeMessage("Invalid data");
+                ConsoleHelper.writeMessage(res.getString("try.again.with.details"));
             }
             else {
                 try {
@@ -28,13 +31,15 @@ public class LoginCommand implements Command {
                     int pinCode = Integer.parseInt(pin);
 
                     if (validCreditCards.containsKey(cardNum) && pin.equals(validCreditCards.getString(cardNum))) {
-                        ConsoleHelper.writeMessage("Verification ok");
+                        ConsoleHelper.writeMessage(String.format(res.getString("success.format"), cardNum));
                         break;
                     }
-                    else
-                        ConsoleHelper.writeMessage("Try again");
+                    else {
+                        ConsoleHelper.writeMessage(String.format(res.getString("not.verified.format"), cardNum));
+                        ConsoleHelper.writeMessage(res.getString("try.again.or.exit"));
+                    }
                 } catch (NumberFormatException e) {
-                    ConsoleHelper.writeMessage("Invalid data");
+                    ConsoleHelper.writeMessage(res.getString("try.again.with.details"));
                 }
             }
         }
