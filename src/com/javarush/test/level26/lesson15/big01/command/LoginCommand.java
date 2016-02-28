@@ -3,9 +3,14 @@ package com.javarush.test.level26.lesson15.big01.command;
 import com.javarush.test.level26.lesson15.big01.ConsoleHelper;
 import com.javarush.test.level26.lesson15.big01.exception.InterruptOperationException;
 
+import java.util.ResourceBundle;
+
 public class LoginCommand implements Command {
-    final static long CARDNUMBER = 123456789012L;
-    final static int PIN = 1234;
+    private ResourceBundle validCreditCards;
+
+    public LoginCommand() {
+        validCreditCards = ResourceBundle.getBundle("com.javarush.test.level26.lesson15.big01.resources.verifiedCards");
+    }
 
     @Override
     public void execute() throws InterruptOperationException {
@@ -21,7 +26,8 @@ public class LoginCommand implements Command {
                 try {
                     long cardNumber = Long.parseLong(cardNum);
                     int pinCode = Integer.parseInt(pin);
-                    if (cardNumber == CARDNUMBER && pinCode == PIN) {
+
+                    if (validCreditCards.containsKey(cardNum) && pin.equals(validCreditCards.getString(cardNum))) {
                         ConsoleHelper.writeMessage("Verification ok");
                         break;
                     }
