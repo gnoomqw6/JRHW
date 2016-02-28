@@ -1,5 +1,6 @@
 package com.javarush.test.level26.lesson15.big01.command;
 
+import com.javarush.test.level26.lesson15.big01.CashMachine;
 import com.javarush.test.level26.lesson15.big01.ConsoleHelper;
 import com.javarush.test.level26.lesson15.big01.CurrencyManipulator;
 import com.javarush.test.level26.lesson15.big01.CurrencyManipulatorFactory;
@@ -11,7 +12,7 @@ class InfoCommand implements Command
     private ResourceBundle res;
 
     public InfoCommand() {
-        res = ResourceBundle.getBundle("com.javarush.test.level26.lesson15.big01.resources.info_en");
+        res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "info_en");
     }
 
     @Override
