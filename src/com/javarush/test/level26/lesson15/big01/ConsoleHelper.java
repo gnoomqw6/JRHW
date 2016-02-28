@@ -37,25 +37,21 @@ public class ConsoleHelper {
         }
     }
 
-    public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException {
+    public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException, NumberFormatException {
         String[] arr;
 
         while (true) {
-            try {
-                writeMessage("Enter nominal and count of bills for " + currencyCode);
-                String s = readString();
-                arr = s.split(" ");
-                if (arr.length != 2) {
-                    writeMessage("Wrong nominal or count value");
-                    continue;
-                }
-                int i1 = Integer.parseInt(arr[0]);
-                int i2 = Integer.parseInt(arr[1]);
-                if (i1 > 0 && i2 > 0) {
-                    return arr;
-                }
-            } catch (NumberFormatException e) {
+            writeMessage("Enter nominal and count of bills for " + currencyCode);
+            String s = readString();
+            arr = s.split(" ");
+            if (arr.length != 2) {
                 writeMessage("Wrong nominal or count value");
+                continue;
+            }
+            int i1 = Integer.parseInt(arr[0]);
+            int i2 = Integer.parseInt(arr[1]);
+            if (i1 > 0 && i2 > 0) {
+                return arr;
             }
         }
     }
