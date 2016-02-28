@@ -19,7 +19,7 @@ public class CashMachine
             }
             while (operation != Operation.EXIT);
         }catch (InterruptOperationException e){
-            ConsoleHelper.writeMessage("Good bye!");
+            ConsoleHelper.writeMessage("Bye-bye");
         }
     }
 }

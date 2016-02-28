@@ -12,12 +12,14 @@ public final class CurrencyManipulatorFactory {
     }
 
     public static CurrencyManipulator getManipulatorByCurrencyCode(String currencyCode) {
-        for (Map.Entry<String, CurrencyManipulator> pair : mapManipulator.entrySet()) {
-            if (currencyCode.equals(pair.getKey())) return pair.getValue();
+        if (mapManipulator.containsKey(currencyCode)) {
+            return mapManipulator.get(currencyCode);
         }
-        CurrencyManipulator currencyManipulator = new CurrencyManipulator(currencyCode);
-        mapManipulator.put(currencyCode, currencyManipulator);
-        return currencyManipulator;
+        else {
+            CurrencyManipulator cur = new CurrencyManipulator(currencyCode);
+            mapManipulator.put(currencyCode, cur);
+            return cur;
+        }
     }
 
     public static Collection<CurrencyManipulator> getAllCurrencyManipulators() {

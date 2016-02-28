@@ -15,14 +15,14 @@ public class ConsoleHelper {
     }
 
     public static String readString() throws InterruptOperationException {
-        String s = "";
+        String message = "";
         try {
-            s = reader.readLine();
-            if (s.equalsIgnoreCase("exit")) throw new InterruptOperationException();
+            message = reader.readLine();
+            if (message.equalsIgnoreCase("exit"))
+                throw new InterruptOperationException();
+        } catch (IOException ignored) {
         }
-        catch (IOException e) {
-        }
-        return s;
+        return message;
     }
 
     public static String askCurrencyCode() throws InterruptOperationException {
