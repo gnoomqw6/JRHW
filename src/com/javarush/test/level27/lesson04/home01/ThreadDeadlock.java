@@ -2,7 +2,7 @@
 //
 //public class ThreadDeadlock {
 //    Object data;
-//    public Object getData() {
+//    public synchronized Object getData() {
 //        return data;
 //    }
 //}

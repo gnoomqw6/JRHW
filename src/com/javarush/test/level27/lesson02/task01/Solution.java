@@ -21,12 +21,11 @@
 //    }
 //
 //    private static boolean isContinueWhile(int sum) {
-//        second:
 //        for (int k = 0; k < 100; k += 20)
 //            if (sum < 100 && k <= 20) {
 //                System.out.println(k < 2 ? k : sum % k);
 //            } else {
-//                return false;
+//                break;
 //            }
 //
 //        return false;

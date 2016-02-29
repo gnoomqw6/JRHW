@@ -8,22 +8,22 @@
 //Весь лишний код удалите из класса.
 //*/
 //public abstract class Solution {
-////    private final Object lock = new Object();
+//    private final Object lock = new Object();
 //    private volatile boolean isWaitingForValue = true;
 //
 //    private final CountDownLatch latch = new CountDownLatch(1);
 //
 //    public void someMethod() throws InterruptedException {
-////        synchronized (lock) {
+//        synchronized (lock) {
 //            while (isWaitingForValue) {
-//                latch.await();
+//                lock.wait();
 //            }
-////        }
+//        }
 //
 //        retrieveValue();
 //
 //        isWaitingForValue = false;
-//        latch.countDown();
+//        lock.notify();
 //    }
 //
 //    abstract void retrieveValue();

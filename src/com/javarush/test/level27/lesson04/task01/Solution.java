@@ -4,7 +4,7 @@
 //Расставьте модификаторы так, чтобы при работе с этим кодом появился дедлок
 //Метод main порождает deadLock, поэтому не участвует в тестировании
 //*/
-//public class Solution {     //НАДО РОБОВАТЬ ДЕЛАТЬ И СРАЗУ ПРОВЕРЯТЬ
+//public class Solution {
 //    private final String field;
 //
 //    public Solution(String field) {
@@ -15,12 +15,12 @@
 //        return field;
 //    }
 //
-//    public void sout(Solution solution) {
+//    public synchronized void sout(Solution solution) {
 //        System.out.format("111:  %s: %s %n", this.field, solution.getField());
 //        solution.sout2(this);
 //    }
 //
-//    public void sout2(Solution solution) {
+//    public synchronized void sout2(Solution solution) {
 //        System.out.format("222:  %s: %s %n", this.field, solution.getField());
 //        solution.sout(this);
 //    }

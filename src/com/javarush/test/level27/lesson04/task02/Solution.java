@@ -4,7 +4,7 @@
 //В методе secondMethod в синхронизированных блоках расставьте локи так,
 //чтобы при использовании класса Solution нитями образовывался дедлок
 //*/
-//public class Solution {     //подписка - тогда делать
+//public class Solution {
 //    private final Object lock = new Object();
 //
 //    public synchronized void firstMethod() {
@@ -14,7 +14,11 @@
 //    }
 //
 //    public void secondMethod() {
-//        doSomething();
+//        synchronized (lock) {
+//            synchronized (this) {
+//                doSomething();
+//            }
+//        }
 //    }
 //
 //    private void doSomething() {

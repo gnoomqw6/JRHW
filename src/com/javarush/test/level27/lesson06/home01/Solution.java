@@ -12,7 +12,7 @@
 //Этот способ избавления от дэдлока называется Открытые вызовы, о нем читайте в дополнительном материале к лекции.
 //Метод main не участвует в тестировании.
 //*/
-//public class Solution {     //РЕШАТЬ ТОЛЬКО С ПОДПИСКОЙ И ФОРУМОМф - СЛОЖНО РАЗОБРАТЬСЯ
+//public class Solution {
 //    public static void main(String[] args) {
 //        final long deadLineTime = System.currentTimeMillis() + 5000; //waiting for 5 sec
 //

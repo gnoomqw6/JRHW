@@ -12,12 +12,25 @@
 //В конструктор передается как минимум один компаратор
 //*/
 //public class Solution {
-//    public static class CustomizedComparator implements Comparator {
+//    public static class CustomizedComparator<T> implements Comparator<T> {
+//        private Comparator<T>[] comparators;
 //
+//        public CustomizedComparator(Comparator<T>... comparators)
+//        {
+//            this.comparators = comparators;
+//        }
 //
 //        @Override
-//        public int compare(Object o1, Object o2) {
-//            return 0;
+//        public int compare(T o1, T o2)
+//        {
+//            int difference = 0;
+//            for (Comparator<T> comparator : comparators)
+//            {
+//                difference = comparator.compare(o1, o2);
+//                if (difference != 0)
+//                    break;
+//            }
+//            return difference;
 //        }
 //    }
 //}
