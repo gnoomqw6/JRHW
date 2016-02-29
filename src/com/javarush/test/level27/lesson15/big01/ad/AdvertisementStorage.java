@@ -5,6 +5,7 @@ import java.util.List;
 
 class AdvertisementStorage {
     private static AdvertisementStorage ourInstance = new AdvertisementStorage();
+    private final List<Advertisement> videos = new ArrayList<>();
 
     public static AdvertisementStorage getInstance() {
         return ourInstance;
@@ -16,8 +17,6 @@ class AdvertisementStorage {
         videos.add(new Advertisement(someContent, "Second Video", 100, 10, 15 * 60)); //15 min
         videos.add(new Advertisement(someContent, "Third Video", 400, 2, 10 * 60));   //10 min
     }
-
-    private final List<Advertisement> videos = new ArrayList<>();
 
     public List<Advertisement> list() {
         return videos;
