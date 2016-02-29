@@ -34,7 +34,7 @@ public class ConsoleHelper {
                 }
                 catch (IllegalArgumentException e)
                 {
-                    ConsoleHelper.writeMessage("No such dish: " + dish);
+                    ConsoleHelper.writeMessage(dish + " is not detected");
                 }
             }
         }

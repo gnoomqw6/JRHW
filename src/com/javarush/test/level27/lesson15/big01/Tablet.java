@@ -17,8 +17,10 @@ public class Tablet extends java.util.Observable {
     public void createOrder() {
         try {
             Order order = new Order(this);
-            setChanged();
-            notifyObservers(order);
+            if (!order.isEmpty()) {
+                setChanged();
+                notifyObservers(order);
+            }
         } catch (IOException e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
         }
