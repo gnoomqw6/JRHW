@@ -2,59 +2,117 @@ package com.javarush.test.level27.lesson15.big01.ad;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
-public class AdvertisementManager {
+public class AdvertisementManager
+{
     private final AdvertisementStorage storage = AdvertisementStorage.getInstance();
     private int timeSeconds;
-
-    public AdvertisementManager(int timeSeconds) {
+    public AdvertisementManager(int timeSeconds)
+    {
         this.timeSeconds = timeSeconds;
     }
-
-    public void processVideos() {
-        Collections.sort(storage.list(), new Comparator<Advertisement>() {
-            @Override
-            public int compare(Advertisement o1, Advertisement o2) {
-                return Long.compare(o2.getAmountPerOneDisplaying(), o1.getAmountPerOneDisplaying());
-            }
-        });
-
-        List<Advertisement> advertisements = new ArrayList<>();
-        int timeLeft = timeSeconds;
-
-        for (Advertisement item : storage.list()) {
-            if (item.getDuration() <= timeLeft) {
-                advertisements.add(item);
-                timeLeft -= item.getDuration();
-            }
-        }
-
-        if (storage.list().isEmpty()) {
+    public void processVideos()
+    {
+        List<Advertisement> selected = selection();
+        if (selected.isEmpty())
+        {
             throw new NoVideoAvailableException();
         }
-
-        Collections.sort(advertisements, new Comparator<Advertisement>() {
+        Collections.sort(selected, new Comparator<Advertisement>()
+        {
             @Override
-            public int compare(Advertisement o1, Advertisement o2) {
-                if (o1.getAmountPerOneDisplaying() == o2.getAmountPerOneDisplaying()) {
-                    long oneSecondCost1 = o1.getAmountPerOneDisplaying() * 1000 / o1.getDuration();
-                    long oneSecondCost2 = o2.getAmountPerOneDisplaying() * 1000 / o2.getDuration();
-                    return Long.compare(oneSecondCost1, oneSecondCost2);
+            public int compare(Advertisement o1, Advertisement o2)
+            {
+                long differenceProceeds = o2.getAmountPerOneDisplaying() - o1.getAmountPerOneDisplaying();
+                if (differenceProceeds != 0)
+                {
+                    return (int)differenceProceeds;
                 }
-                return Long.compare(o2.getAmountPerOneDisplaying(), o1.getAmountPerOneDisplaying());
+                else
+                {
+                    int proceedsPerSecond1 = (int) (1000 * ((double) o1.getAmountPerOneDisplaying() / o1.getDuration()));
+                    int proceedsPerSecond2 = (int) (1000 * ((double) o2.getAmountPerOneDisplaying() / o2.getDuration()));
+                    return proceedsPerSecond1 - proceedsPerSecond2;
+                }
             }
         });
-
-        for (Advertisement advertisement : advertisements) {
-            ConsoleHelper.writeMessage(String.format("%s is displaying... %d, %d",
-                    advertisement.getName(),
-                    advertisement.getAmountPerOneDisplaying(),
-                    advertisement.getAmountPerOneDisplaying() * 1000 / advertisement.getDuration()));
+        for (Advertisement advertisement : selected)
+        {
+            String pattern = "%s is displaying... %s, %s";
+            String proceeds = String.valueOf(advertisement.getAmountPerOneDisplaying());
+            String proceedsPerOneSecond = String.valueOf((int)(1000 * (double) advertisement.getAmountPerOneDisplaying()
+                    / advertisement.getDuration()));
+            ConsoleHelper.writeMessage(String.format(pattern, advertisement.getName(), proceeds, proceedsPerOneSecond));
             advertisement.revalidate();
+        }
+    }
+    private List<Advertisement> selection()
+    {
+        Map<List<Advertisement>, Long> results = new HashMap<>();
+        List<Advertisement> temp = new ArrayList<>();
+        for (Advertisement iter : storage.list()) {
+            if (iter.getHits() > 0) {
+                temp.add(iter);
+            }
+        }
+        Advertisement[] arr = temp.toArray(new Advertisement[temp.size()]);
+        for (int i = 0; i < arr.length; i++)
+        {
+            search(arr, i, 0, 0, new ArrayList<Advertisement>(), results);
+        }
+        List<Advertisement> standardList = new ArrayList<>();
+        long standardProceeds = 0;
+        for (Map.Entry<List<Advertisement>, Long> pair : results.entrySet())
+        {
+            if (standardProceeds < pair.getValue())
+            {
+                standardList = pair.getKey();
+                standardProceeds = pair.getValue();
+            }
+            else if (standardProceeds == pair.getValue())
+            {
+                int standardDuration = 0;
+                for (Advertisement advertisement : standardList)
+                {
+                    standardDuration += advertisement.getDuration();
+                }
+                int currentDuration = 0;
+                for (Advertisement advertisement : pair.getKey())
+                {
+                    currentDuration += advertisement.getDuration();
+                }
+                if ((standardDuration < currentDuration) || (standardDuration == currentDuration && standardList.size() > pair.getKey().size()))
+                {
+                    standardList = pair.getKey();
+                    standardProceeds = pair.getValue();
+                }
+            }
+        }
+        return standardList;
+    }
+    private void search(Advertisement[] advertisements, int pos, int duration, long proceeds, List<Advertisement> result,
+                        Map<List<Advertisement>, Long> results)
+    {
+        duration += advertisements[pos].getDuration();
+        proceeds += advertisements[pos].getAmountPerOneDisplaying();
+        if (duration > timeSeconds)
+        {
+            proceeds -= advertisements[pos].getAmountPerOneDisplaying();
+            results.put(result, proceeds);
+        }
+        else
+        {
+            result.add(advertisements[pos]);
+            if (pos == advertisements.length - 1)
+            {
+                results.put(result, proceeds);
+                return;
+            }
+            for (int i = pos + 1; i < advertisements.length; i++)
+            {
+                search(advertisements, i, duration, proceeds, new ArrayList<Advertisement>(result), results);
+            }
         }
     }
 }
