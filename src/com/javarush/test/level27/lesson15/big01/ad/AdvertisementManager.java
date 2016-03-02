@@ -1,6 +1,9 @@
 package com.javarush.test.level27.lesson15.big01.ad;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
+import com.javarush.test.level27.lesson15.big01.statistic.StatisticManager;
+import com.javarush.test.level27.lesson15.big01.statistic.event.NoAvailableVideoEventDataRow;
+import com.javarush.test.level27.lesson15.big01.statistic.event.VideoSelectedEventDataRow;
 
 import java.util.*;
 
@@ -17,6 +20,7 @@ public class AdvertisementManager
         List<Advertisement> selected = selection();
         if (selected.isEmpty())
         {
+            StatisticManager.getInstance().register(new NoAvailableVideoEventDataRow(timeSeconds));
             throw new NoVideoAvailableException();
         }
         Collections.sort(selected, new Comparator<Advertisement>()
@@ -37,6 +41,15 @@ public class AdvertisementManager
                 }
             }
         });
+
+        long amount = 0;
+        int duration = 0;
+        for (Advertisement ad : selected) {
+            amount += ad.getAmountPerOneDisplaying();
+            duration += ad.getDuration();
+        }
+        StatisticManager.getInstance().register(new VideoSelectedEventDataRow(selected, amount, duration));
+
         for (Advertisement advertisement : selected)
         {
             String pattern = "%s is displaying... %s, %s";

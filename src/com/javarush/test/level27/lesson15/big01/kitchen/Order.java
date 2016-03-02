@@ -16,6 +16,14 @@ public class Order {
         ConsoleHelper.writeMessage(this.toString());
     }
 
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public Tablet getTablet() {
+        return tablet;
+    }
+
     @Override
     public String toString() {
         if (dishes.isEmpty()) {
