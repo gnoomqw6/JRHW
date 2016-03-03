@@ -33,12 +33,10 @@ public class Advertisement {
         return hits;
     }
 
+    //изменил пересчет
     public void revalidate() {
-        if (hits <= 0) {
-            throw new UnsupportedOperationException();
-        }
-        else {
-            hits--;
-        }
+        if (hits <= 0) throw new UnsupportedOperationException();
+        hits--;
+        if (hits == 1) amountPerOneDisplaying += initialAmount % amountPerOneDisplaying;
     }
 }

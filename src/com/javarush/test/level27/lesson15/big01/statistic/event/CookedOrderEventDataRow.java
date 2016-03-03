@@ -1,6 +1,5 @@
 package com.javarush.test.level27.lesson15.big01.statistic.event;
 
-import com.javarush.test.level27.lesson15.big01.kitchen.Cook;
 import com.javarush.test.level27.lesson15.big01.kitchen.Dish;
 
 import java.util.Date;
@@ -34,5 +33,9 @@ public class CookedOrderEventDataRow implements EventDataRow{
     @Override
     public int getTime() {
         return cookingTimeSeconds;
+    }
+
+    public String getCookName() {
+        return cookName;
     }
 }
