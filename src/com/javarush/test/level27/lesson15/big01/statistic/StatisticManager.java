@@ -38,58 +38,52 @@ public class StatisticManager {
         return roundedDate.getTime();
     }
 
-    public Map<Date, Double> getAdvertismentStatistic() {
-        Map<Date, Double> result = new TreeMap<>(Collections.reverseOrder());
+    public Map<Date, Double> getAdRevenue() {
+        Map<Date, Double> resultMap = new TreeMap<>(Collections.reverseOrder());
         for (EventDataRow event : storage.getEventList(EventType.SELECTED_VIDEOS)) {
-            Date dateKey = dateToStringMidnight(event.getDate());
-            double amount = ((VideoSelectedEventDataRow) event).getAmount();
-
-            if (result.containsKey(dateKey)) {
-                double sumAmount = result.get(dateKey) + amount;
-                result.put(dateKey, sumAmount);
+            Date date = dateToStringMidnight(event.getDate());
+            VideoSelectedEventDataRow eventData = (VideoSelectedEventDataRow) event;
+            if (resultMap.containsKey(date)) {
+                resultMap.put(date, resultMap.get(date) + (0.01d * (double) eventData.getAmount()));
             } else {
-                result.put(dateKey, amount);
+                resultMap.put(date, (0.01d * (double) eventData.getAmount()));
             }
         }
-        return result;
+        return resultMap;
     }
 
-    public Map<Date, Map<String, Integer>> getCookStatistic() {
-        Map<Date, Map<String, Integer>> result = new TreeMap<>(Collections.reverseOrder());
-
+    public Map<Date, Map<String, Integer>> getCookWorkload() {
+        Map<Date, Map<String, Integer>> resultMap = new TreeMap<>(Collections.reverseOrder());
         for (EventDataRow event : storage.getEventList(EventType.COOKED_ORDER)) {
-            Date dateKey = dateToStringMidnight(event.getDate());
-            String name = ((CookedOrderEventDataRow) event).getCookName();
-            int time = event.getTime();
-            if (time != 0) {
-                if (time % 60 == 0) time = time / 60;
-                else time = time / 60 + 1;
-
-                if (result.containsKey(dateKey)) {
-                    Map<String, Integer> tempMap = result.get(dateKey);
-                    if (tempMap.containsKey(name)) {
-                        int tempTime = tempMap.get(name) + time;
-                        tempMap.put(name, tempTime);
-                    } else {
-                        tempMap.put(name, time);
-                    }
-                    result.put(dateKey, tempMap);
+            Date date = dateToStringMidnight(event.getDate());
+            CookedOrderEventDataRow eventData = (CookedOrderEventDataRow) event;
+            int time = eventData.getTime();
+            if (time == 0)
+                continue;
+            if (time % 60 == 0) time = time / 60;
+            else time = time / 60 + 1;
+            if (resultMap.containsKey(date)) {
+                Map<String, Integer> cookInfo = resultMap.get(date);
+                if (cookInfo.containsKey(eventData.getCookName())) {
+                    cookInfo.put(eventData.getCookName(), cookInfo.get(eventData.getCookName()) + time);
                 } else {
-                    Map<String, Integer> tempMap = new TreeMap<>();
-                    tempMap.put(name, time);
-                    result.put(dateKey, tempMap);
+                    cookInfo.put(eventData.getCookName(), time);
                 }
+            } else {
+                TreeMap<String, Integer> cookInfo = new TreeMap<>();
+                cookInfo.put(eventData.getCookName(), time);
+                resultMap.put(date, cookInfo);
             }
         }
-        return result;
+        return resultMap;
     }
 
-    private class StatisticStorage {
+    private static class StatisticStorage {
         private Map<EventType, List<EventDataRow>> eventMap = new HashMap<>();
 
         public StatisticStorage() {
             for (EventType eventType : EventType.values())
-                eventMap.put(eventType, new ArrayList<>());
+                eventMap.put(eventType, new ArrayList<EventDataRow>());
         }
 
         private void put(EventDataRow data) {

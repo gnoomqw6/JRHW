@@ -10,7 +10,7 @@ import java.util.Map;
 public class DirectorTablet {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
     public void printAdvertisementProfit() {
-        Map<Date, Double> profitMap = StatisticManager.getInstance().getAdvertismentStatistic();
+        Map<Date, Double> profitMap = StatisticManager.getInstance().getAdRevenue();
         double total = 0;
         for (Map.Entry<Date, Double> pair : profitMap.entrySet()) {
             System.out.println(dateFormat.format(pair.getKey()) + " - " + pair.getValue());
@@ -20,7 +20,7 @@ public class DirectorTablet {
     }
 
     public void printCookWorkloading() {
-        Map<Date, Map<String, Integer>> cookMap = StatisticManager.getInstance().getCookStatistic();
+        Map<Date, Map<String, Integer>> cookMap = StatisticManager.getInstance().getCookWorkload();
         for (Map.Entry<Date, Map<String, Integer>> pair : cookMap.entrySet()) {
             System.out.println(dateFormat.format(pair.getKey()));
             for (Map.Entry<String, Integer> cooker : pair.getValue().entrySet()) {
