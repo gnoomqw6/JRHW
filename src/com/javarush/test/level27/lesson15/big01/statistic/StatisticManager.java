@@ -24,43 +24,42 @@ public class StatisticManager {
         storage.put(data);
     }
 
-    //подозреваю я, что беда начинается здесь
     public void register(Cook cook) {
         cookSet.add(cook);
+    }
+
+    private Date dateToStringMidnight(Date date) {
+        GregorianCalendar roundedDate = new GregorianCalendar();
+        roundedDate.setTime(date);
+        roundedDate.set(Calendar.HOUR_OF_DAY, 0);
+        roundedDate.set(Calendar.MINUTE, 0);
+        roundedDate.set(Calendar.SECOND, 0);
+        roundedDate.set(Calendar.MILLISECOND, 0);
+        return roundedDate.getTime();
     }
 
     public Map<Date, Double> getAdvertismentStatistic() {
         Map<Date, Double> result = new TreeMap<>(Collections.reverseOrder());
         for (EventDataRow event : storage.getEventList(EventType.SELECTED_VIDEOS)) {
-            Date date = event.getDate();
-            //приводим дату к виду (дата такая-то)00ч:00м:00с:000мс
-            //чтобы использовать как ключ в мапе
-            Date dateKey = new Date(date.getTime() / 86400000 * 86400000);
-            double amount = ((VideoSelectedEventDataRow)event).getAmount();
+            Date dateKey = dateToStringMidnight(event.getDate());
+            double amount = ((VideoSelectedEventDataRow) event).getAmount();
 
             if (result.containsKey(dateKey)) {
                 double sumAmount = result.get(dateKey) + amount;
                 result.put(dateKey, sumAmount);
-            }
-            else {
+            } else {
                 result.put(dateKey, amount);
             }
         }
         return result;
     }
 
-    //я нигде не использовал сет поваров, который мы объявляли
-    //да и в голову не приходит мысль, как его использовать
-    //подскажите
     public Map<Date, Map<String, Integer>> getCookStatistic() {
         Map<Date, Map<String, Integer>> result = new TreeMap<>(Collections.reverseOrder());
 
         for (EventDataRow event : storage.getEventList(EventType.COOKED_ORDER)) {
-            Date date = event.getDate();
-            //приводим дату к виду (дата такая-то)00ч:00м:00с:000мс
-            //чтобы использовать как ключ в мапе
-            Date dateKey = new Date(date.getTime() / 86400000 * 86400000);
-            String name = ((CookedOrderEventDataRow)event).getCookName();
+            Date dateKey = dateToStringMidnight(event.getDate());
+            String name = ((CookedOrderEventDataRow) event).getCookName();
             int time = event.getTime();
             if (time != 0) {
                 if (time % 60 == 0) time = time / 60;
@@ -71,13 +70,11 @@ public class StatisticManager {
                     if (tempMap.containsKey(name)) {
                         int tempTime = tempMap.get(name) + time;
                         tempMap.put(name, tempTime);
-                    }
-                    else {
+                    } else {
                         tempMap.put(name, time);
                     }
                     result.put(dateKey, tempMap);
-                }
-                else {
+                } else {
                     Map<String, Integer> tempMap = new TreeMap<>();
                     tempMap.put(name, time);
                     result.put(dateKey, tempMap);
@@ -92,7 +89,7 @@ public class StatisticManager {
 
         public StatisticStorage() {
             for (EventType eventType : EventType.values())
-                eventMap.put(eventType, new ArrayList<EventDataRow>());
+                eventMap.put(eventType, new ArrayList<>());
         }
 
         private void put(EventDataRow data) {
