@@ -29,26 +29,21 @@ public class StatisticManager {
         cookSet.add(cook);
     }
 
-    public Map<Date, Long> getAdvertismentStatistic() {
-        Map<Date, Long> result = new TreeMap<>(Collections.reverseOrder());
-        for (Map.Entry<EventType, List<EventDataRow>> pair : storage.getEventMap().entrySet()) {
-            if (pair.getKey().equals(EventType.SELECTED_VIDEOS)) {
-                for (EventDataRow iter : pair.getValue()) {
-                    if (!pair.getValue().isEmpty()) {
-                        Date date = iter.getDate();
-                        //приводим дату к виду (дата такая-то)00ч:00м:00с:000мс
-                        //чтобы использовать как ключ в мапе
-                        Date dateKey = new Date(((long)(date.getTime() / 86400000)) * 86400000);
-                        Long amount = ((VideoSelectedEventDataRow)iter).getAmount();
-                        if (result.containsKey(dateKey)) {
-                            long sumAmount = result.get(dateKey) + amount;
-                            result.put(dateKey, sumAmount);
-                        }
-                        else {
-                            result.put(dateKey, amount);
-                        }
-                    }
-                }
+    public Map<Date, Double> getAdvertismentStatistic() {
+        Map<Date, Double> result = new TreeMap<>(Collections.reverseOrder());
+        for (EventDataRow event : storage.getEventList(EventType.SELECTED_VIDEOS)) {
+            Date date = event.getDate();
+            //приводим дату к виду (дата такая-то)00ч:00м:00с:000мс
+            //чтобы использовать как ключ в мапе
+            Date dateKey = new Date(date.getTime() / 86400000 * 86400000);
+            double amount = ((VideoSelectedEventDataRow)event).getAmount();
+
+            if (result.containsKey(dateKey)) {
+                double sumAmount = result.get(dateKey) + amount;
+                result.put(dateKey, sumAmount);
+            }
+            else {
+                result.put(dateKey, amount);
             }
         }
         return result;
@@ -59,37 +54,33 @@ public class StatisticManager {
     //подскажите
     public Map<Date, Map<String, Integer>> getCookStatistic() {
         Map<Date, Map<String, Integer>> result = new TreeMap<>(Collections.reverseOrder());
-        for (Map.Entry<EventType, List<EventDataRow>> pair : storage.getEventMap().entrySet()) {
-            if (pair.getKey().equals(EventType.COOKED_ORDER)) {
-                for (EventDataRow iter : pair.getValue()) {
-                    if (!pair.getValue().isEmpty()) {
-                        Date date = iter.getDate();
-                        //приводим дату к виду (дата такая-то)00ч:00м:00с:000мс
-                        //чтобы использовать как ключ в мапе
-                        Date dateKey = new Date(((long)(date.getTime() / 86400000)) * 86400000);
-                        String name = ((CookedOrderEventDataRow)iter).getCookName();
-                        int time = ((CookedOrderEventDataRow)iter).getTime();
-                        if (time != 0) {
-                            if (time % 60 == 0) time = time / 60;
-                            else time = time / 60 + 1;
-                            if (result.containsKey(dateKey)) {
-                                Map<String, Integer> tempMap = result.get(dateKey);
-                                if (tempMap.containsKey(name)) {
-                                    int tempTime = tempMap.get(name) + time;
-                                    tempMap.put(name, tempTime);
-                                }
-                                else {
-                                    tempMap.put(name, time);
-                                }
-                                result.put(dateKey, tempMap);
-                            }
-                            else {
-                                Map<String, Integer> tempMap = new TreeMap<>();
-                                tempMap.put(name, time);
-                                result.put(dateKey, tempMap);
-                            }
-                        }
+
+        for (EventDataRow event : storage.getEventList(EventType.COOKED_ORDER)) {
+            Date date = event.getDate();
+            //приводим дату к виду (дата такая-то)00ч:00м:00с:000мс
+            //чтобы использовать как ключ в мапе
+            Date dateKey = new Date(date.getTime() / 86400000 * 86400000);
+            String name = ((CookedOrderEventDataRow)event).getCookName();
+            int time = event.getTime();
+            if (time != 0) {
+                if (time % 60 == 0) time = time / 60;
+                else time = time / 60 + 1;
+
+                if (result.containsKey(dateKey)) {
+                    Map<String, Integer> tempMap = result.get(dateKey);
+                    if (tempMap.containsKey(name)) {
+                        int tempTime = tempMap.get(name) + time;
+                        tempMap.put(name, tempTime);
                     }
+                    else {
+                        tempMap.put(name, time);
+                    }
+                    result.put(dateKey, tempMap);
+                }
+                else {
+                    Map<String, Integer> tempMap = new TreeMap<>();
+                    tempMap.put(name, time);
+                    result.put(dateKey, tempMap);
                 }
             }
         }
@@ -108,8 +99,8 @@ public class StatisticManager {
             eventMap.get(data.getType()).add(data);
         }
 
-        public Map<EventType, List<EventDataRow>> getEventMap() {
-            return eventMap;
+        public List<EventDataRow> getEventList(EventType eventType) {
+            return eventMap.get(eventType);
         }
     }
 }

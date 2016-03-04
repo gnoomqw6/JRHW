@@ -10,9 +10,9 @@ import java.util.Map;
 public class DirectorTablet {
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
     public void printAdvertisementProfit() {
-        Map<Date, Long> profitMap = StatisticManager.getInstance().getAdvertismentStatistic();
-        long total = 0;
-        for (Map.Entry<Date, Long> pair : profitMap.entrySet()) {
+        Map<Date, Double> profitMap = StatisticManager.getInstance().getAdvertismentStatistic();
+        double total = 0;
+        for (Map.Entry<Date, Double> pair : profitMap.entrySet()) {
             System.out.println(dateFormat.format(pair.getKey()) + " - " + pair.getValue());
             total += pair.getValue();
         }
