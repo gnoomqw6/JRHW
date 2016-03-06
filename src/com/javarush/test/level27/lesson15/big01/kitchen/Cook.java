@@ -7,7 +7,7 @@ import com.javarush.test.level27.lesson15.big01.statistic.event.CookedOrderEvent
 import java.util.Observable;
 import java.util.Observer;
 
-public class Cook extends Observable implements Observer {
+public class Cook extends Observable {
     private final String name;
 
     public Cook(String name) {
@@ -19,13 +19,13 @@ public class Cook extends Observable implements Observer {
         return name;
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-        ConsoleHelper.writeMessage(String.format("Start cooking - %s, cooking time %dmin", arg, ((Order)arg).getTotalCookingTime()));
-        StatisticEventManager.getInstance().register(new CookedOrderEventDataRow(((Order) arg).getTablet().toString(), name, ((Order)arg).getTotalCookingTime() * 60, ((Order)arg).getDishes()));
+    public void startCookingOrder(Order order) {
+        ConsoleHelper.writeMessage(String.format
+                ("Start cooking - %s, cooking time %dmin", order, order.getTotalCookingTime()));
+        StatisticEventManager.getInstance().register(new CookedOrderEventDataRow(order.getTablet().toString(),
+                name, order.getTotalCookingTime() * 60, order.getDishes()));
 
         setChanged();
-        notifyObservers(arg);
+        notifyObservers(order);
     }
 }
