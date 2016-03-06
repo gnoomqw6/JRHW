@@ -10,7 +10,7 @@ public class TestOrder extends Order {
     }
 
     protected void initDishes() {
-        int dishCount = (int) (Math.random() * Dish.values().length - 1) + 1;
+        int dishCount = Dish.values().length;
         for (int i = 0; i < dishCount; i++) {
             int randomDishNumber = (int) (Math.random() * Dish.values().length);
             dishes.add(Dish.values()[randomDishNumber]);
