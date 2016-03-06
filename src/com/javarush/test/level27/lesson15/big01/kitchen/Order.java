@@ -4,15 +4,16 @@ import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
 import com.javarush.test.level27.lesson15.big01.Tablet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Order {
     private Tablet tablet;
-    private List<Dish> dishes;
+    protected List<Dish> dishes = new ArrayList<>();
 
     public Order(Tablet tablet) throws IOException {
         this.tablet = tablet;
-        dishes = ConsoleHelper.getAllDishesForOrder();
+        initDishes();
         ConsoleHelper.writeMessage(this.toString());
     }
 
@@ -44,5 +45,9 @@ public class Order {
 
     public boolean isEmpty() {
         return dishes.isEmpty();
+    }
+
+    protected void initDishes() throws IOException {
+        dishes = ConsoleHelper.getAllDishesForOrder();
     }
 }
