@@ -5,10 +5,14 @@ import com.javarush.test.level27.lesson15.big01.statistic.StatisticEventManager;
 import com.javarush.test.level27.lesson15.big01.statistic.event.CookedOrderEventDataRow;
 
 import java.util.Observable;
-import java.util.Observer;
 
 public class Cook extends Observable {
     private final String name;
+    private boolean busy;
+
+    public boolean isBusy() {
+        return busy;
+    }
 
     public Cook(String name) {
         this.name = name;
@@ -19,13 +23,21 @@ public class Cook extends Observable {
         return name;
     }
 
-    public void startCookingOrder(Order order) {
+    public synchronized void startCookingOrder(Order order) {
+        busy = true;
         ConsoleHelper.writeMessage(String.format
                 ("Start cooking - %s, cooking time %dmin", order, order.getTotalCookingTime()));
         StatisticEventManager.getInstance().register(new CookedOrderEventDataRow(order.getTablet().toString(),
                 name, order.getTotalCookingTime() * 60, order.getDishes()));
 
+        try {
+            Thread.sleep(order.getTotalCookingTime() * 10);
+        } catch (InterruptedException e) {
+        }
+
         setChanged();
         notifyObservers(order);
+
+        busy = false;
     }
 }

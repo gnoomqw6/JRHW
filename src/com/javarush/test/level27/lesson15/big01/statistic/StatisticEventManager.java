@@ -20,6 +20,10 @@ public class StatisticEventManager {
     private StatisticEventManager() {
     }
 
+    public Set<Cook> getCookSet() {
+        return cookSet;
+    }
+
     public void register(EventDataRow data) {
         storage.put(data);
     }

@@ -20,7 +20,6 @@ public class Restaurant {
             Tablet tablet = new Tablet(i);
             tablets.add(tablet);
             tablet.addObserver(orderManager);
-            tablet.addObserver(orderManager);
         }
         Waitor waitor = new Waitor();
         cook1.addObserver(waitor);
@@ -33,35 +32,6 @@ public class Restaurant {
         }
 
         thread.interrupt();
-
-//        List<Tablet> tabletList = new ArrayList<>();
-//        Waitor waitor = new Waitor();
-//        Cook cook1 = new Cook("Chef Cook");
-//        Cook cook2 = new Cook("Cook");
-//        cook1.addObserver(waitor);
-//        cook2.addObserver(waitor);
-//
-//        for (int i = 0; i < 9; i++) {
-//            Tablet tablet = new Tablet(i);
-//            tabletList.add(tablet);
-//            if (i % 2 == 0) {
-//                tablet.addObserver(cook1);
-//            }
-//            else {
-//                tablet.addObserver(cook2);
-//            }
-//        }
-//
-//        Thread thread = new Thread(new RandomOrderGeneratorTask(tabletList, ORDER_CREATING_INTERVAL));
-//        thread.start();
-//
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//
-//        thread.interrupt();
 
         DirectorTablet directorTablet = new DirectorTablet();
         directorTablet.printAdvertisementProfit();

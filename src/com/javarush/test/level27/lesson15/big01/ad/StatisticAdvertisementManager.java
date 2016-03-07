@@ -1,9 +1,7 @@
 package com.javarush.test.level27.lesson15.big01.ad;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class StatisticAdvertisementManager {
     private static StatisticAdvertisementManager ourInstance = new StatisticAdvertisementManager();
