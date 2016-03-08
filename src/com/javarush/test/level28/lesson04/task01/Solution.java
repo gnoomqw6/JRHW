@@ -23,6 +23,23 @@
 //secondGroup-pool-2-thread-2
 //*/
 //public class Solution {
+//    public static class AmigoThreadFactory implements ThreadFactory {
+//        private AtomicInteger threadNum = new AtomicInteger(1);
+//        private AtomicInteger factoryNum = new AtomicInteger();
+//        private static AtomicInteger factoryCount = new AtomicInteger(1);
+//        public AmigoThreadFactory() {
+//            factoryNum.set(factoryCount.getAndIncrement());
+//        }
+//
+//        @Override
+//        public Thread newThread(Runnable r) {
+//            Thread thread = new Thread(r);
+//            thread.setDaemon(false);
+//            thread.setPriority(Thread.NORM_PRIORITY);
+//            thread.setName(thread.getThreadGroup().getName() + "-pool-" + factoryNum + "-thread-" + threadNum.getAndIncrement());
+//            return thread;
+//        }
+//    }
 //
 //    public static void main(String[] args) {
 //        class EmulateThreadFactoryTask implements Runnable {
