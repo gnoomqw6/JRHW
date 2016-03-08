@@ -1,4 +1,4 @@
-    package com.javarush.test.level27.lesson15.big01.kitchen;
+package com.javarush.test.level27.lesson15.big01.kitchen;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
 import com.javarush.test.level27.lesson15.big01.statistic.StatisticEventManager;
