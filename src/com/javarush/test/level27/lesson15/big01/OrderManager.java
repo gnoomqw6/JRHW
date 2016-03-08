@@ -19,27 +19,23 @@ public class OrderManager implements Observer {
             @Override
             public void run() {
                 while (true){
-                    try {
-                        if(!queue.isEmpty()){
-                            for(Cook cook : cooks){
-                                if (!cook.isBusy()){
-                                    Thread cookThread = new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            try {
-                                                cook.startCookingOrder(queue.take());
-                                            } catch (InterruptedException e) {
-                                            }
-                                        }
-                                    });
+                    if (!queue.isEmpty()) {
+                        for (Cook cook : cooks) {
+                            if (!cook.isBusy()) {
+                                try {
+                                    cook.startCookingOrder(queue.take());
+                                } catch (InterruptedException e) {
                                 }
-                                if (queue.isEmpty()) {break;}
-                                else {Thread.sleep(10);}
+                                if (queue.isEmpty()) {
+                                    break;
+                                }
                             }
                         }
-                        Thread.sleep(10);
                     }
-                    catch (InterruptedException ignored) {break;}
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         });

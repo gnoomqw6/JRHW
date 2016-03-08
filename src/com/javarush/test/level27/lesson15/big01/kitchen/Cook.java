@@ -1,4 +1,4 @@
-package com.javarush.test.level27.lesson15.big01.kitchen;
+    package com.javarush.test.level27.lesson15.big01.kitchen;
 
 import com.javarush.test.level27.lesson15.big01.ConsoleHelper;
 import com.javarush.test.level27.lesson15.big01.statistic.StatisticEventManager;
@@ -27,13 +27,14 @@ public class Cook extends Observable {
         busy = true;
         ConsoleHelper.writeMessage(String.format
                 ("Start cooking - %s, cooking time %dmin", order, order.getTotalCookingTime()));
-        StatisticEventManager.getInstance().register(new CookedOrderEventDataRow(order.getTablet().toString(),
-                name, order.getTotalCookingTime() * 60, order.getDishes()));
 
         try {
             Thread.sleep(order.getTotalCookingTime() * 10);
         } catch (InterruptedException e) {
         }
+
+        StatisticEventManager.getInstance().register(new CookedOrderEventDataRow(order.getTablet().toString(),
+                name, order.getTotalCookingTime() * 60, order.getDishes()));
 
         setChanged();
         notifyObservers(order);
