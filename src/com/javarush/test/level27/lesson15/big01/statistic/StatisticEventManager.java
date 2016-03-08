@@ -11,7 +11,6 @@ import java.util.*;
 public class StatisticEventManager {
     private static StatisticEventManager ourInstance = new StatisticEventManager();
     private StatisticStorage storage = new StatisticStorage();
-    private Set<Cook> cookSet = new HashSet<>();
 
     public static StatisticEventManager getInstance() {
         return ourInstance;
@@ -20,16 +19,8 @@ public class StatisticEventManager {
     private StatisticEventManager() {
     }
 
-    public Set<Cook> getCookSet() {
-        return cookSet;
-    }
-
     public void register(EventDataRow data) {
         storage.put(data);
-    }
-
-    public void register(Cook cook) {
-        cookSet.add(cook);
     }
 
     private Date dateToStringMidnight(Date date) {

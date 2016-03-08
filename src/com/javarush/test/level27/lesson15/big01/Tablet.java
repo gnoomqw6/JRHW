@@ -6,12 +6,18 @@ import com.javarush.test.level27.lesson15.big01.kitchen.Order;
 import com.javarush.test.level27.lesson15.big01.kitchen.TestOrder;
 
 import java.io.IOException;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Tablet extends java.util.Observable {
+public class Tablet {
     private final int number;
     private static Logger logger = Logger.getLogger(Tablet.class.getName());
+    private LinkedBlockingQueue<Order> queue;
+
+    public void setQueue(LinkedBlockingQueue<Order> queue) {
+        this.queue = queue;
+    }
 
     public Tablet(int number) {
         this.number = number;
@@ -48,8 +54,10 @@ public class Tablet extends java.util.Observable {
             } catch (NoVideoAvailableException e) {
                 logger.log(Level.INFO, "No video is available for the order " + order);
             }
-            setChanged();
-            notifyObservers(order);
+            try {
+                queue.put(order);
+            } catch (InterruptedException e) {
+            }
         }
     }
 }
