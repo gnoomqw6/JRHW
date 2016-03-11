@@ -1,6 +1,11 @@
 package com.javarush.test.level29.lesson15.big01.human;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class Human {
+    private List<Human> children = new ArrayList<>();
     public static int nextId = 0;
     private int id;
     protected int age;
@@ -45,6 +50,18 @@ public class Human {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Human> getChildren() {
+        return Collections.unmodifiableList(children);
+    }
+
+    public void addChild(Human child) {
+        children.add(child);
+    }
+
+    public void removeChild(Human child) {
+        children.remove(child);
     }
 
     public int getCourse() {
