@@ -1,20 +1,15 @@
 package com.javarush.test.level29.lesson15.big01.human;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-public class Student extends Human {
+public class Student extends UniversityPerson {
     private double averageGrade;
-    private String university;
     private int course;
     private Date beginningOfSession;
     private Date endOfSession;
 
     public Student(String name, int age, double averageGrade) {
         super(name, age);
-        this.name = name;
-        this.age = age;
         this.averageGrade = averageGrade;
     }
 
@@ -23,14 +18,6 @@ public class Student extends Human {
     }
 
     public void learn() {
-    }
-
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
     }
 
     public int getCourse() {
