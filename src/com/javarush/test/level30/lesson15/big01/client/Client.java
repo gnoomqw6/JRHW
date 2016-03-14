@@ -6,6 +6,7 @@ import com.javarush.test.level30.lesson15.big01.Message;
 import com.javarush.test.level30.lesson15.big01.MessageType;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class Client {
     protected Connection connection;
@@ -79,16 +80,32 @@ public class Client {
     }
 
     public class SocketThread extends Thread {
+        @Override
+        public void run() {
+            String address = getServerAddress();
+            int port = getServerPort();
+            try {
+                Socket socket = new Socket(address, port);
+                connection = new Connection(socket);
+                clientHandshake();
+                clientMainLoop();
+            } catch (IOException e) {
+                notifyConnectionStatusChanged(false);
+            } catch (ClassNotFoundException e) {
+                notifyConnectionStatusChanged(false);
+            }
+        }
+
         protected void processIncomingMessage(String message) {
             ConsoleHelper.writeMessage(message);
         }
 
         protected void informAboutAddingNewUser(String userName) {
-            ConsoleHelper.writeMessage(userName + "entered");
+            ConsoleHelper.writeMessage(userName + " entered");
         }
 
         protected void informAboutDeletingNewUser(String userName) {
-            ConsoleHelper.writeMessage(userName + "has left");
+            ConsoleHelper.writeMessage(userName + " has left");
         }
 
         protected void notifyConnectionStatusChanged(boolean clientConnected) {
