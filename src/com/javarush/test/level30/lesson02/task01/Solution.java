@@ -14,6 +14,21 @@
 //    }
 //
 //    public static String convertToDecimalSystem(String s) {
+//        if (s.charAt(0) == '0') {
+//            if (s.indexOf('x') > -1) {
+//                String substr = s.substring(2);
+//                int i = Integer.parseInt(substr, 16);
+//                return String.valueOf(i);
+//            }
+//            if (s.indexOf('b') > -1) {
+//                String substr = s.substring(2);
+//                int i = Integer.parseInt(substr, 2);
+//                return String.valueOf(i);
+//            }
+//            String substr = s.substring(1);
+//            int i = Integer.parseInt(substr, 8);
+//            return String.valueOf(i);
+//        }
 //        return s;
 //    }
 //}
