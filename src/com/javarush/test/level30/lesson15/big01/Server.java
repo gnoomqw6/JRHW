@@ -45,6 +45,38 @@ public class Server {
             this.socket = socket;
         }
 
+        @Override
+        public void run() {
+            ConsoleHelper.writeMessage("Connection compete with " + socket.getRemoteSocketAddress());
+            Connection connection = null;
+            String newClient = null;
+            try {
+                connection = new Connection(socket);
+                newClient = serverHandshake(connection);
+                sendBroadcastMessage(new Message(MessageType.USER_ADDED, newClient));
+                sendListOfUsers(connection, newClient);
+                serverMainLoop(connection, newClient);
+            } catch (IOException e) {
+                try {
+                    connection.close();
+                } catch (IOException e1) {
+                }
+                ConsoleHelper.writeMessage("произошла ошибка при обмене данными с удаленным адресом");
+            } catch (ClassNotFoundException e) {
+                try {
+                    connection.close();
+                } catch (IOException e1) {
+                }
+                ConsoleHelper.writeMessage("произошла ошибка при обмене данными с удаленным адресом");
+            } finally {
+                if (newClient != null) {
+                    connectionMap.remove(newClient);
+                    sendBroadcastMessage(new Message(MessageType.USER_REMOVED, newClient));
+                }
+            }
+            ConsoleHelper.writeMessage("Connection closed");
+        }
+
         private String serverHandshake(Connection connection) throws IOException, ClassNotFoundException {
             String clientName = null;
             Message askName = new Message(MessageType.NAME_REQUEST);
