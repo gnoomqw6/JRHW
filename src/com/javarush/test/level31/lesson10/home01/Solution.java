@@ -1,5 +1,8 @@
 //package com.javarush.test.level31.lesson10.home01;
 //
+//import java.io.FileInputStream;
+//import java.io.FileReader;
+//import java.io.IOException;
 //import java.util.Properties;
 //
 ///* Читаем конфиги
@@ -24,6 +27,21 @@
 //    }
 //
 //    public Properties getProperties(String fileName) {
-//        return null;
+//        Properties properties = new Properties();
+//        if (fileName.endsWith(".xml")) {
+//            try {
+//                properties.loadFromXML(new FileInputStream(fileName));
+//            } catch (IOException e) {
+//                return properties;
+//            }
+//        }
+//        else {
+//            try {
+//                properties.load(new FileReader(fileName));
+//            } catch (IOException e) {
+//                return properties;
+//            }
+//        }
+//        return properties;
 //    }
 //}

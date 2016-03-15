@@ -1,5 +1,10 @@
 //package com.javarush.test.level31.lesson06.bonus01;
 //
+//import java.io.*;
+//import java.util.*;
+//import java.util.zip.ZipEntry;
+//import java.util.zip.ZipInputStream;
+//
 ///* Разархивируем файл
 //В метод main приходит список аргументов.
 //Первый аргумент - имя результирующего файла resultFileName, остальные аргументы - имена файлов fileNamePart.
@@ -16,6 +21,34 @@
 //C:/pathToTest/test.zip.002
 //*/
 //public class Solution {
-//    public static void main(String[] args) {
+//    public static void main(String[] args) throws IOException
+//    {
+//        File result = new File(args[0]);
+//        byte[] arr = new byte[1024];
+//        List<File> listFiles = new ArrayList<>();
+//        for(int i = 1; i < args.length; i++){
+//            listFiles.add(new File(args[i]));
+//        }
+//        Collections.sort(listFiles);
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        for(File f : listFiles){
+//            FileInputStream fis = new FileInputStream(f);
+//            while(fis.read(arr)>-1){
+//                baos.write(arr);
+//                baos.flush();
+//            }
+//        }
+//        ZipInputStream zis = new ZipInputStream(new ByteArrayInputStream(baos.toByteArray()));
+//        FileOutputStream fosLoc = new FileOutputStream(result);
+//        ZipEntry ze = zis.getNextEntry();
+//        while(ze!=null){
+//            int count;
+//            while((count=zis.read(arr))>-1){
+//                fosLoc.write(arr,0,count);
+//                fosLoc.flush();
+//            }
+//            ze = zis.getNextEntry();
+//        }
+//        fosLoc.close();
 //    }
 //}
