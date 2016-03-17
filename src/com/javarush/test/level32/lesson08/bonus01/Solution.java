@@ -4,6 +4,8 @@
 //import com.javarush.test.level32.lesson08.bonus01.Item;
 //import com.javarush.test.level32.lesson08.bonus01.Small;
 //
+//import java.lang.reflect.Proxy;
+//
 ///* Дженерики для создания прокси-объекта
 //В классе Solution создайте публичный метод getProxy
 //1) Метод getProxy должен возвращать прокси для любого интерфейса, который наследуется от Item
@@ -29,5 +31,14 @@
 //        boolean isSmall = proxy instanceof Small;
 //
 //        System.out.format("%b %b %b\n", isItem, isBig, isSmall);
+//    }
+//
+//    public <T extends Item> T getProxy(Class<T> cls, Class<?> ... interfaces){
+//        Class[] intfcs = new Class[interfaces.length+1];
+//        for(int i = 0; i < interfaces.length; i++){
+//            intfcs[i] = interfaces[i];
+//        }
+//        intfcs[intfcs.length-1] = cls;
+//        return (T)Proxy.newProxyInstance(cls.getClassLoader(), intfcs, new ItemInvocationHandler());
 //    }
 //}

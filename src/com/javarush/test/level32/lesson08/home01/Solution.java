@@ -1,5 +1,7 @@
 //package com.javarush.test.level32.lesson08.home01;
 //
+//import java.lang.reflect.Proxy;
+//
 ///* Создание прокси-объекта
 //1) В отдельном файле создать публичный класс CustomInvocationHandler, который будет хэндлером при создании прокси-объекта.
 //2) CustomInvocationHandler должен иметь один публичный конструктор с одним агументом типа SomeInterfaceWithMethods.
@@ -26,6 +28,14 @@
 //    }
 //
 //    public static SomeInterfaceWithMethods getProxy() {
-//        return null;
+//        SomeInterfaceWithMethodsImpl interfaceWithMethods = new SomeInterfaceWithMethodsImpl();
+//
+//        ClassLoader classLoader = interfaceWithMethods.getClass().getClassLoader();
+//        Class<?>[] interfaces = interfaceWithMethods.getClass().getInterfaces();
+//        CustomInvocationHandler handler = new CustomInvocationHandler(interfaceWithMethods);
+//
+//        SomeInterfaceWithMethods someInterfaceWithMethods =
+//                (SomeInterfaceWithMethods)Proxy.newProxyInstance(classLoader, interfaces, handler);
+//        return someInterfaceWithMethods;
 //    }
 //}

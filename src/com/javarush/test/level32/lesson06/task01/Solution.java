@@ -1,6 +1,10 @@
 //package com.javarush.test.level32.lesson06.task01;
 //
 //import java.io.ByteArrayOutputStream;
+//import java.util.ArrayList;
+//import java.util.Arrays;
+//import java.util.Collections;
+//import java.util.List;
 //
 ///* Генератор паролей
 //Реализуйте логику метода getPassword, который должен возвращать ByteArrayOutputStream, в котором будут байты пароля.
@@ -19,6 +23,24 @@
 //    }
 //
 //    public static ByteArrayOutputStream getPassword() {
-//        return null;
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        List<Byte> list = new ArrayList<>();
+//        for (int i = 0; i < 2; i++) {
+//            int n = (int) (Math.random() * 10) + 48;
+//            list.add((byte) n);
+//        }
+//        for (int i = 0; i < 3; i++) {
+//            int n = (int) (Math.random() * 26) + 65;
+//            list.add((byte) n);
+//        }
+//        for (int i = 0; i < 3; i++) {
+//            int n = (int) (Math.random() * 26) + 97;
+//            list.add((byte) n);
+//        }
+//        Collections.shuffle(list);
+//        for (byte b : list) {
+//            outputStream.write(b);
+//        }
+//        return outputStream;
 //    }
 //}

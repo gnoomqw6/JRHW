@@ -1,12 +1,10 @@
 //package com.javarush.test.level32.lesson04.home01;
 //
-//import java.io.FileInputStream;
-//import java.io.IOException;
-//import java.io.InputStream;
-//import java.io.StringWriter;
+//import java.io.*;
 //
 ///* Читаем из потока
-//Реализуйте логику метода getAllDataFromInputStream. Он должен вернуть StringWriter, содержащий все данные из переданного потока.
+//Реализуйте логику метода getAllDataFromInputStream. Он должен вернуть StringWriter,
+//содержащий все данные из переданного потока.
 //Возвращаемый объект ни при каких условиях не должен быть null.
 //Метод main не участвует в тестировании.
 //*/
@@ -17,6 +15,17 @@
 //    }
 //
 //    public static StringWriter getAllDataFromInputStream(InputStream is) throws IOException {
-//        return null;
+//        if(is == null){
+//            return new StringWriter();
+//        }
+//        StringWriter sw = new StringWriter();
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+//        char[] cbuf = new char[512];
+//        while (reader.ready()) {
+//            int len = reader.read(cbuf);
+//            sw.write(cbuf, 0, len);
+//        }
+//        reader.close();
+//        return sw;
 //    }
 //}
